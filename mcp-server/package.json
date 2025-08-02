@@ -1,0 +1,22 @@
+{
+  "name": "starlight-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP server for Starlight documentation site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test.js",
+    "demo": "node working-demo.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.0.0",
+    "glob": "^10.3.10"
+  },
+  "keywords": ["mcp", "starlight", "astro", "documentation"],
+  "author": "",
+  "license": "MIT"
+} 
