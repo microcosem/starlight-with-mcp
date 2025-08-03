@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "npm run generate-docs && astro build",
+    "build": "npm run generate-index && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "generate-docs": "node mcp-client/generate-docs.js",
+    "generate-index": "node mcp-client/generate-index.js",
     "demo": "node mcp-client/demo.js",
     "demo-petstore": "node petstore-mcp-server/demo.js",
     "demo-starlight": "node mcp-server/working-demo.js",
@@ -17,6 +18,7 @@
   "dependencies": {
     "@astrojs/starlight": "^0.35.2",
     "astro": "^5.6.1",
-    "sharp": "^0.34.2"
+    "sharp": "^0.34.2",
+    "starlight-openapi": "^0.19.1"
   }
 }

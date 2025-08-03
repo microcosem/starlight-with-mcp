@@ -28,12 +28,7 @@ npm run dev
 
 ## 📋 What This Demo Shows
 
-This project demonstrates a complete MCP workflow:
-
-1. **MCP Client** connects to multiple MCP servers
-2. **Pet Store MCP Server** provides API documentation from OpenAPI specs
-3. **Starlight MCP Server** manages existing documentation
-4. **Automated generation** creates combined documentation
+This project demonstrates a complete MCP workflow for automated documentation generation from multiple sources.
 
 ## 🏗️ Architecture
 
@@ -48,6 +43,83 @@ This project demonstrates a complete MCP workflow:
 │ - Generated     │    │ - Generates docs │    │ - Examples      │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
+
+## 🔧 MCP Client/Server Architecture
+
+This project demonstrates a complete **Model Context Protocol (MCP)** workflow for automated documentation generation. It consists of three main components:
+
+### 🎯 **MCP Client** (`mcp-client/client.js`)
+
+The **StarlightMCPClient** serves as the orchestrator that connects to multiple MCP servers and coordinates documentation generation:
+
+**Key Features:**
+- **Multi-server connectivity**: Can connect to multiple MCP servers simultaneously
+- **Tool execution**: Calls tools on remote servers and processes responses
+- **Resource management**: Reads and lists resources from connected servers
+- **Documentation generation**: Automatically generates combined documentation from multiple sources
+- **File system integration**: Writes generated documentation to the Starlight docs structure
+
+**Main Methods:**
+- `connectToServer()` - Establishes connections to MCP servers
+- `generateApiDocs()` - Generates API documentation from Pet Store server
+- `generateStarlightDocs()` - Retrieves existing Starlight documentation structure
+- `generateCombinedDocs()` - Creates unified documentation combining multiple sources
+
+### 🏪 **Pet Store MCP Server** (`petstore-mcp-server/server.js`)
+
+This server provides API documentation tools based on OpenAPI specifications:
+
+**Available Tools:**
+- `get_api_specification` - Returns complete OpenAPI spec
+- `list_endpoints` - Lists all API endpoints (filterable by tag)
+- `get_endpoint_details` - Gets detailed information about specific endpoints
+- `get_schemas` - Retrieves data models and schemas
+- `generate_markdown_docs` - Generates formatted markdown documentation
+- `get_api_info` - Returns basic API metadata
+
+**Key Capabilities:**
+- **OpenAPI Integration**: Reads from `petstore-api.json` specification
+- **Flexible Output**: Supports different documentation formats (full, endpoints, schemas, overview)
+- **Example Generation**: Includes request/response examples
+- **Resource Access**: Provides access to the raw API specification file
+
+### 📚 **Starlight MCP Server** (`mcp-server/server.js`)
+
+This server manages existing Starlight documentation and provides tools for content discovery:
+
+**Available Tools:**
+- `list_docs` - Lists all documentation pages (filterable by category)
+- `search_docs` - Searches documentation content by keyword
+- `get_doc_content` - Retrieves specific page content with frontmatter
+- `get_site_structure` - Returns complete site navigation structure
+
+**Key Capabilities:**
+- **Content Discovery**: Scans the `src/content/docs/` directory
+- **Frontmatter Processing**: Extracts metadata from markdown files
+- **Search Functionality**: Full-text search across documentation
+- **Structure Analysis**: Provides site navigation and organization
+- **Resource Access**: Lists and reads documentation files
+
+### 🔄 **Workflow Process**
+
+The typical workflow follows this pattern:
+
+1. **Client Initialization**: MCP client starts and prepares to connect to servers
+2. **Server Connections**: Client connects to both Pet Store and Starlight MCP servers
+3. **Content Retrieval**: 
+   - Pet Store server provides API documentation from OpenAPI spec
+   - Starlight server provides existing documentation structure
+4. **Documentation Generation**: Client combines content and generates unified documentation
+5. **File Output**: Generated documentation is written to `src/content/docs/`
+6. **Cleanup**: Client disconnects from all servers
+
+### 🏗️ **Architecture Benefits**
+
+- **Modular Design**: Each server has a specific responsibility
+- **Extensible**: Easy to add new MCP servers for different content sources
+- **Automated**: Documentation generation can be integrated into CI/CD pipelines
+- **Standards-based**: Uses the official MCP SDK and protocol
+- **Content-aware**: Understands both API specs and existing documentation
 
 ## 🧞 Available Commands
 

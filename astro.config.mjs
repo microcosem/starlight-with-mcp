@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightOpenapi, { openAPISidebarGroups } from 'starlight-openapi';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,10 +17,30 @@ export default defineConfig({
 						{ label: 'Example Guide', slug: 'guides/example' },
 					],
 				},
+				...openAPISidebarGroups,
 				{
 					label: 'Reference',
 					autogenerate: { directory: 'reference' },
 				},
+			],
+			plugins: [
+				starlightOpenapi([
+					{
+						base: 'api/petstore-api',
+						label: 'Pet Store API',
+						schema: './petstore-mcp-server/petstore-api.json',
+						sidebar: {
+							operations: {
+								badges: true,
+								labels: 'summary',
+								sort: 'document',
+							},
+							tags: {
+								sort: 'document',
+							},
+						},
+					},
+				]),
 			],
 		}),
 	],
