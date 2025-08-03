@@ -1,4 +1,4 @@
-# Starlight MCP Server Setup
+# Starlight MCP server setup
 
 This document explains the complete setup of an MCP (Model Context Protocol) server for your Starlight documentation site.
 
@@ -11,7 +11,7 @@ The Model Context Protocol (MCP) is a standard for AI assistants to interact wit
 - Execute tools and commands
 - Get real-time information from various sources
 
-## Project Structure
+## Project structure
 
 ```
 starlight-mcp/
@@ -32,51 +32,51 @@ starlight-mcp/
 └── MCP-SERVER-SETUP.md   # This file
 ```
 
-## MCP Server Features
+## MCP server features
 
-### Available Tools
+### Available tools
 
 1. **`list_docs`** - List all documentation pages with metadata
 2. **`search_docs`** - Search documentation content by keywords
 3. **`get_doc_content`** - Get full content of specific pages
 4. **`get_site_structure`** - Get complete site organization
 
-### Available Resources
+### Available resources
 
 - Direct access to all markdown files via `file:///` scheme
 - Frontmatter parsing and metadata extraction
 - HTML rendering of markdown content
 
-## Installation & Setup
+## Installation & setup
 
-### 1. Install Dependencies
+### 1. Install dependencies
 
 ```bash
 cd mcp-server
 npm install
 ```
 
-### 2. Make Server Executable
+### 2. Make server executable
 
 ```bash
 chmod +x server.js
 ```
 
-### 3. Test the Server
+### 3. Test the server
 
 ```bash
 npm test
 ```
 
-### 4. Run Demo Client
+### 4. Run demo client
 
 ```bash
 npm run demo
 ```
 
-## Usage Examples
+## Usage examples
 
-### Basic Server Usage
+### Basic server usage
 
 ```bash
 # Start the server
@@ -114,7 +114,7 @@ const results = await client.callTool({
 });
 ```
 
-### Integration with AI Assistants
+### Integration with AI assistants
 
 To integrate with AI assistants that support MCP:
 
@@ -128,7 +128,7 @@ To integrate with AI assistants that support MCP:
 
 ## Configuration
 
-### MCP Client Configuration
+### MCP client configuration
 
 ```json
 {
@@ -144,21 +144,21 @@ To integrate with AI assistants that support MCP:
 }
 ```
 
-### Environment Variables
+### Environment variables
 
 - `NODE_ENV`: Set to `production` for production use
 - Content directory is automatically detected relative to the server
 
 ## Development
 
-### Adding New Tools
+### Adding new tools
 
 1. Add tool definition to `ListToolsRequestSchema` handler
 2. Add tool implementation to `CallToolRequestSchema` handler
 3. Implement the corresponding method in the class
 4. Add tests to `test.js`
 
-### Extending Functionality
+### Extending functionality
 
 The server is designed to be extensible. You can add:
 
@@ -170,13 +170,13 @@ The server is designed to be extensible. You can add:
 
 ## Troubleshooting
 
-### Common Issues
+### Common issues
 
 1. **Import errors**: Make sure all dependencies are installed
 2. **Path issues**: Ensure the server can find the content directory
 3. **Permission errors**: Make sure server.js is executable
 
-### Debug Mode
+### Debug mode
 
 Run with Node.js debug flags:
 
@@ -184,7 +184,7 @@ Run with Node.js debug flags:
 node --inspect server.js
 ```
 
-## Security Considerations
+## Security considerations
 
 - The server only reads files, it doesn't modify them
 - File access is restricted to the documentation directory
@@ -198,7 +198,7 @@ node --inspect server.js
 - Large files are processed in chunks
 - Memory usage is optimized for typical documentation sizes
 
-## Future Enhancements
+## Future enhancements
 
 Potential improvements:
 

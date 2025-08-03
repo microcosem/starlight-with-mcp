@@ -19,12 +19,12 @@ class StarlightMCPClient {
   async connectToServer(name, command, args = [], env = {}) {
     console.log(`🔌 Connecting to ${name} MCP server...`);
     
-    const process = spawn(command, args, {
-      stdio: ['pipe', 'pipe', 'pipe'],
+    const transport = new StdioClientTransport({
+      command,
+      args,
       env: { ...process.env, ...env }
     });
     
-    const transport = new StdioClientTransport(process);
     const client = new Client({
       name: `${name}-client`,
       version: '1.0.0',
@@ -32,7 +32,7 @@ class StarlightMCPClient {
     
     await client.connect(transport);
     
-    this.servers.set(name, process);
+    this.servers.set(name, transport);
     this.clients.set(name, client);
     
     console.log(`✅ Connected to ${name} MCP server`);
@@ -40,7 +40,7 @@ class StarlightMCPClient {
   }
 
   async disconnectFromServer(name) {
-    const process = this.servers.get(name);
+    const transport = this.servers.get(name);
     const client = this.clients.get(name);
     
     if (client) {
@@ -48,8 +48,8 @@ class StarlightMCPClient {
       this.clients.delete(name);
     }
     
-    if (process) {
-      process.kill();
+    if (transport) {
+      await transport.close();
       this.servers.delete(name);
     }
     
@@ -232,7 +232,7 @@ description: Welcome to our documentation
 
 Welcome to our comprehensive documentation site.
 
-## API Documentation
+## API documentation
 
 - [Pet Store API](/api/petstore-api/) - Complete API reference with examples
 
@@ -246,7 +246,7 @@ Welcome to our comprehensive documentation site.
 - [API Reference](/reference/example/) - Detailed API documentation
 - [Configuration](/reference/example/) - Configuration options
 
-## Generated Content
+## Generated content
 
 This documentation is automatically generated using MCP (Model Context Protocol) servers.
 

@@ -1,13 +1,13 @@
 ---
-title: Error Handling
+title: Error handling
 description: Understanding and handling API errors effectively
 ---
 
-# Error Handling
+# Error handling
 
 This guide explains how to handle errors from the Pet Store API effectively. All errors follow a consistent format and include helpful information for debugging.
 
-## Error Response Format
+## Error response format
 
 All error responses follow this consistent structure:
 
@@ -18,16 +18,16 @@ All error responses follow this consistent structure:
 }
 ```
 
-### Error Fields
+### Error fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `code` | Integer | HTTP status code |
 | `message` | String | Human-readable error description |
 
-## HTTP Status Codes
+## HTTP status codes
 
-### Client Errors (4xx)
+### Client errors (4xx)
 
 | Code | Name | Description | Common Causes |
 |------|------|-------------|---------------|
@@ -40,7 +40,7 @@ All error responses follow this consistent structure:
 | 422 | Unprocessable Entity | Validation failed | Invalid data format, business logic errors |
 | 429 | Too Many Requests | Rate limit exceeded | Too many requests in time period |
 
-### Server Errors (5xx)
+### Server errors (5xx)
 
 | Code | Name | Description |
 |------|------|-------------|
@@ -49,7 +49,7 @@ All error responses follow this consistent structure:
 | 503 | Service Unavailable | Service temporarily unavailable |
 | 504 | Gateway Timeout | Request timeout |
 
-## Common Error Scenarios
+## Common error scenarios
 
 ### 400 Bad Request
 
@@ -113,7 +113,7 @@ All error responses follow this consistent structure:
 }
 ```
 
-## Error Handling Examples
+## Error handling examples
 
 ### JavaScript (Node.js)
 
@@ -207,9 +207,9 @@ curl -X GET "https://api.petstore.com/v1/pets/999" \
   -s
 ```
 
-## Best Practices
+## Best practices
 
-### 1. Always Check Response Status
+### 1. Always check response status
 
 ```javascript
 if (!response.ok) {
@@ -218,7 +218,7 @@ if (!response.ok) {
 }
 ```
 
-### 2. Use Specific Error Handling
+### 2. Use specific error handling
 
 ```javascript
 switch (error.code) {
@@ -236,7 +236,7 @@ switch (error.code) {
 }
 ```
 
-### 3. Implement Retry Logic
+### 3. Implement retry logic
 
 ```javascript
 async function retryRequest(url, options, maxRetries = 3) {
@@ -258,7 +258,7 @@ async function retryRequest(url, options, maxRetries = 3) {
 }
 ```
 
-### 4. Log Errors Appropriately
+### 4. Log errors appropriately
 
 ```javascript
 function logError(error, context) {
@@ -271,7 +271,7 @@ function logError(error, context) {
 }
 ```
 
-## Rate Limiting
+## Rate limiting
 
 When you hit rate limits (429 errors), the response includes headers with limit information:
 
@@ -283,26 +283,26 @@ X-RateLimit-Reset: 1640995200
 
 Handle rate limiting by:
 
-1. **Exponential Backoff**: Wait progressively longer between retries
-2. **Respect Headers**: Use `X-RateLimit-Reset` to know when limits reset
-3. **Queue Requests**: Implement request queuing for high-volume applications
+1. **Exponential backoff**: Wait progressively longer between retries
+2. **Respect headers**: Use `X-RateLimit-Reset` to know when limits reset
+3. **Queue requests**: Implement request queuing for high-volume applications
 
-## Debugging Tips
+## Debugging tips
 
-1. **Check Request Data**: Ensure all required fields are present
-2. **Validate Data Types**: Make sure data matches expected formats
-3. **Review Headers**: Verify Content-Type and Authorization headers
+1. **Check request data**: Ensure all required fields are present
+2. **Validate data types**: Make sure data matches expected formats
+3. **Review headers**: Verify Content-Type and Authorization headers
 4. **Test with cURL**: Use cURL to test requests manually
-5. **Check API Status**: Verify the API is operational
+5. **Check API status**: Verify the API is operational
 
-## Getting Help
+## Getting help
 
 If you encounter persistent errors:
 
-1. **Check Documentation**: Review the [API Reference](/api/petstore-api/)
-2. **Validate Your Request**: Use the interactive documentation
-3. **Contact Support**: Email support@petstore.com with error details
-4. **Check Status Page**: Visit [status.petstore.com](https://status.petstore.com)
+1. **Check documentation**: Review the [API Reference](/api/petstore-api/)
+2. **Validate your request**: Use the interactive documentation
+3. **Contact support**: Email support@petstore.com with error details
+4. **Check status page**: Visit [status.petstore.com](https://status.petstore.com)
 
 ---
 

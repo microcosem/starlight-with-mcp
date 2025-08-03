@@ -1,9 +1,9 @@
 ---
-title: Quick Start Guide
+title: Quick start guide
 description: Get up and running with the Pet Store API in minutes
 ---
 
-# Quick Start Guide
+# Quick start guide
 
 Welcome to the Pet Store API! This guide will help you make your first API request in just a few minutes.
 
@@ -15,9 +15,9 @@ Before you begin, make sure you have:
 - Basic knowledge of HTTP requests and JSON
 - No authentication required for this demo API
 
-## Making Your First Request
+## Making your first request
 
-### 1. List All Pets
+### 1. List all pets
 
 Start by retrieving a list of all pets in the store:
 
@@ -48,7 +48,7 @@ curl -X GET "https://api.petstore.com/v1/pets" \
 ]
 ```
 
-### 2. Create a New Pet
+### 2. Create a new pet
 
 Add a new pet to the store:
 
@@ -72,7 +72,7 @@ curl -X POST "https://api.petstore.com/v1/pets" \
   }'
 ```
 
-### 3. Get a Specific Pet
+### 3. Get a specific pet
 
 Retrieve information about a specific pet by ID:
 
@@ -81,7 +81,7 @@ curl -X GET "https://api.petstore.com/v1/pets/1" \
   -H "Content-Type: application/json"
 ```
 
-## Using Different Programming Languages
+## Using different programming languages
 
 ### JavaScript (Node.js)
 
@@ -140,15 +140,15 @@ def create_pet():
     print(pet)
 ```
 
-## Understanding Responses
+## Understanding responses
 
-### Success Responses
+### Success responses
 
 - **200 OK**: Request successful (GET, PUT)
 - **201 Created**: Resource created successfully (POST)
 - **204 No Content**: Request successful, no content returned (DELETE)
 
-### Error Responses
+### Error responses
 
 - **400 Bad Request**: Invalid request data
 - **404 Not Found**: Resource not found
@@ -162,19 +162,19 @@ Example error response:
 }
 ```
 
-## Next Steps
+## Next steps
 
 Now that you've made your first API calls, explore:
 
-- **[Complete API Reference](/api/petstore-api/)** - All available endpoints
-- **[Authentication Guide](/guides/authentication/)** - Learn about authentication (when implemented)
-- **[Error Handling](/api/errors/)** - Handle errors gracefully
-- **[Best Practices](/guides/best-practices/)** - Recommended patterns
+- **[Complete API reference](/api/petstore-api/)** - All available endpoints
+- **[Authentication guide](/guides/authentication/)** - Learn about authentication (when implemented)
+- **[Error handling](/api/errors/)** - Handle errors gracefully
+- **[Best practices](/guides/best-practices/)** - Recommended patterns
 
-## Need Help?
+## Need help?
 
-- Check the **[API Reference](/api/petstore-api/)** for detailed endpoint documentation
-- Review **[Error Handling](/api/errors/)** for common issues
+- Check the **[API reference](/api/petstore-api/)** for detailed endpoint documentation
+- Review **[Error handling](/api/errors/)** for common issues
 - Contact support at support@petstore.com
 
 ---

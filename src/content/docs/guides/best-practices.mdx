@@ -1,15 +1,15 @@
 ---
-title: Best Practices
+title: Best practices
 description: Recommended patterns and tips for using the Pet Store API effectively
 ---
 
-# Best Practices
+# Best practices
 
 This guide provides recommended patterns and tips for using the Pet Store API effectively in production applications.
 
-## API Design Principles
+## API design principles
 
-### 1. RESTful Conventions
+### 1. RESTful conventions
 
 Follow RESTful principles for consistent API usage:
 
@@ -18,7 +18,7 @@ Follow RESTful principles for consistent API usage:
 - **Use hierarchical URLs**: `/pets/{id}/orders` for nested resources
 - **Return appropriate status codes**: 200 for success, 201 for created, 204 for deleted
 
-### 2. Resource Naming
+### 2. Resource naming
 
 Use clear, consistent naming conventions:
 
@@ -36,9 +36,9 @@ POST /createPet
 GET /pet/{id}
 ```
 
-## Error Handling
+## Error handling
 
-### 1. Always Check Response Status
+### 1. Always check response status
 
 ```javascript
 async function makeApiRequest(url, options = {}) {
@@ -53,7 +53,7 @@ async function makeApiRequest(url, options = {}) {
 }
 ```
 
-### 2. Implement Retry Logic
+### 2. Implement retry logic
 
 ```javascript
 async function retryRequest(requestFn, maxRetries = 3) {
@@ -70,7 +70,7 @@ async function retryRequest(requestFn, maxRetries = 3) {
 }
 ```
 
-### 3. Handle Specific Error Types
+### 3. Handle specific error types
 
 ```javascript
 async function handleApiError(error) {
@@ -88,9 +88,9 @@ async function handleApiError(error) {
 }
 ```
 
-## Performance Optimization
+## Performance optimization
 
-### 1. Use Pagination
+### 1. Use pagination
 
 Always use pagination for list endpoints:
 
@@ -114,7 +114,7 @@ async function getAllPets() {
 }
 ```
 
-### 2. Implement Caching
+### 2. Implement caching
 
 Cache responses to reduce API calls:
 
@@ -142,7 +142,7 @@ class ApiCache {
 }
 ```
 
-### 3. Batch Requests
+### 3. Batch requests
 
 When possible, batch multiple operations:
 
@@ -156,9 +156,9 @@ const pet3 = await createPet(petData3);
 const pets = await createPets([petData1, petData2, petData3]);
 ```
 
-## Security Best Practices
+## Security best practices
 
-### 1. Secure API Key Storage
+### 1. Secure API key storage
 
 ```javascript
 // Never hardcode API keys
@@ -171,7 +171,7 @@ const headers = {
 };
 ```
 
-### 2. Validate Input Data
+### 2. Validate input data
 
 ```javascript
 function validatePetData(data) {
@@ -203,9 +203,9 @@ const baseUrl = process.env.NODE_ENV === 'production'
   : 'http://localhost:3000/v1';
 ```
 
-## Data Management
+## Data management
 
-### 1. Handle Large Datasets
+### 1. Handle large datasets
 
 For large datasets, use streaming or chunking:
 
@@ -224,7 +224,7 @@ async function processLargeDataset(url, processor) {
 }
 ```
 
-### 2. Implement Data Validation
+### 2. Implement data validation
 
 ```javascript
 const petSchema = {
@@ -241,9 +241,9 @@ function validateAgainstSchema(data, schema) {
 }
 ```
 
-## Monitoring and Logging
+## Monitoring and logging
 
-### 1. Log API Requests
+### 1. Log API requests
 
 ```javascript
 async function loggedApiRequest(url, options = {}) {
@@ -264,7 +264,7 @@ async function loggedApiRequest(url, options = {}) {
 }
 ```
 
-### 2. Monitor Rate Limits
+### 2. Monitor rate limits
 
 ```javascript
 function monitorRateLimits(headers) {
@@ -282,7 +282,7 @@ function monitorRateLimits(headers) {
 
 ## Testing
 
-### 1. Mock API Responses
+### 1. Mock API responses
 
 ```javascript
 // Mock API for testing
@@ -301,7 +301,7 @@ const mockApi = {
 };
 ```
 
-### 2. Test Error Scenarios
+### 2. Test error scenarios
 
 ```javascript
 describe('API Error Handling', () => {
@@ -319,9 +319,9 @@ describe('API Error Handling', () => {
 });
 ```
 
-## Code Examples
+## Code examples
 
-### Complete API Client
+### Complete API client
 
 ```javascript
 class PetStoreApiClient {
@@ -375,12 +375,12 @@ class PetStoreApiClient {
 }
 ```
 
-## Next Steps
+## Next steps
 
-- **[Quick Start Guide](/guides/quick-start/)** - Get started with the API
-- **[Error Handling](/api/errors/)** - Learn about error handling
-- **[Rate Limiting](/api/rate-limiting/)** - Understand rate limits
-- **[API Reference](/api/petstore-api/)** - Explore all endpoints
+- **[Quick start guide](/guides/quick-start/)** - Get started with the API
+- **[Error handling](/api/errors/)** - Learn about error handling
+- **[Rate limiting](/api/rate-limiting/)** - Understand rate limits
+- **[API reference](/api/petstore-api/)** - Explore all endpoints
 
 ---
 

@@ -1,9 +1,9 @@
 ---
-title: Rate Limiting
+title: Rate limiting
 description: Understanding API rate limits and how to handle them
 ---
 
-# Rate Limiting
+# Rate limiting
 
 This guide explains how rate limiting works in the Pet Store API and how to handle rate limit responses effectively.
 
@@ -11,27 +11,27 @@ This guide explains how rate limiting works in the Pet Store API and how to hand
 
 Rate limiting helps ensure fair usage of the API and protects our infrastructure. Different rate limits apply based on your authentication status and API plan.
 
-## Rate Limit Tiers
+## Rate limit tiers
 
-### Unauthenticated Requests
+### Unauthenticated requests
 
 - **100 requests per hour**
 - **10 requests per minute**
 - Limited to read-only operations
 
-### Authenticated Requests
+### Authenticated requests
 
 - **1,000 requests per hour**
 - **100 requests per minute**
 - Full access to all operations
 
-### Premium Plans
+### Premium plans
 
 - **10,000 requests per hour**
 - **1,000 requests per minute**
 - Priority support and advanced features
 
-## Rate Limit Headers
+## Rate limit headers
 
 All API responses include rate limit information in headers:
 
@@ -41,7 +41,7 @@ X-RateLimit-Remaining: 999
 X-RateLimit-Reset: 1640995200
 ```
 
-### Header Fields
+### Header fields
 
 | Header | Description | Example |
 |--------|-------------|---------|
@@ -49,7 +49,7 @@ X-RateLimit-Reset: 1640995200
 | `X-RateLimit-Remaining` | Number of requests remaining in current window | `999` |
 | `X-RateLimit-Reset` | Unix timestamp when the rate limit resets | `1640995200` |
 
-## Rate Limit Response
+## Rate limit response
 
 When you exceed the rate limit, you'll receive a `429 Too Many Requests` response:
 
@@ -60,9 +60,9 @@ When you exceed the rate limit, you'll receive a `429 Too Many Requests` respons
 }
 ```
 
-## Handling Rate Limits
+## Handling rate limits
 
-### 1. Check Rate Limit Headers
+### 1. Check rate limit headers
 
 Always check the rate limit headers to monitor your usage:
 
@@ -75,7 +75,7 @@ console.log(`Remaining requests: ${remaining}`);
 console.log(`Rate limit resets at: ${new Date(reset * 1000)}`);
 ```
 
-### 2. Implement Exponential Backoff
+### 2. Implement exponential backoff
 
 When you hit a rate limit, implement exponential backoff:
 
@@ -102,7 +102,7 @@ async function makeRequestWithRetry(url, options = {}, maxRetries = 3) {
 }
 ```
 
-### 3. Python Example
+### 3. Python example
 
 ```python
 import requests
@@ -130,9 +130,9 @@ def make_request_with_retry(url, headers=None, max_retries=3):
             time.sleep(2 ** i)  # Exponential backoff
 ```
 
-## Best Practices
+## Best practices
 
-### 1. Monitor Your Usage
+### 1. Monitor your usage
 
 Track your rate limit usage to avoid hitting limits:
 
@@ -158,7 +158,7 @@ class RateLimitMonitor {
 }
 ```
 
-### 2. Implement Request Queuing
+### 2. Implement request queuing
 
 For high-volume applications, implement request queuing:
 
@@ -198,7 +198,7 @@ class RequestQueue {
 }
 ```
 
-### 3. Cache Responses
+### 3. Cache responses
 
 Reduce API calls by caching responses:
 
@@ -223,7 +223,7 @@ async function cachedRequest(url, ttl = 300000) { // 5 minutes
 }
 ```
 
-## Rate Limit by Endpoint
+## Rate limit by endpoint
 
 Different endpoints may have different rate limits:
 
@@ -234,16 +234,16 @@ Different endpoints may have different rate limits:
 | `DELETE /pets/{id}` | Reduced | Destructive operations |
 | `GET /orders` | Standard | Read operations |
 
-## Upgrading Your Plan
+## Upgrading your plan
 
 If you consistently hit rate limits, consider upgrading:
 
-1. **Contact Support** - Email support@petstore.com
-2. **Provide Usage Data** - Share your current usage patterns
-3. **Discuss Requirements** - Explain your use case and requirements
-4. **Review Options** - Choose the best plan for your needs
+1. **Contact support** - Email support@petstore.com
+2. **Provide usage data** - Share your current usage patterns
+3. **Discuss requirements** - Explain your use case and requirements
+4. **Review options** - Choose the best plan for your needs
 
-## Monitoring and Alerts
+## Monitoring and alerts
 
 Set up monitoring to track your rate limit usage:
 
@@ -260,11 +260,11 @@ function logRateLimitUsage(headers) {
 }
 ```
 
-## Next Steps
+## Next steps
 
-- **[Error Handling](/api/errors/)** - Handle rate limit errors gracefully
+- **[Error handling](/api/errors/)** - Handle rate limit errors gracefully
 - **[Authentication](/guides/authentication/)** - Get higher rate limits with authentication
-- **[API Reference](/api/petstore-api/)** - Explore all endpoints and their limits
+- **[API reference](/api/petstore-api/)** - Explore all endpoints and their limits
 
 ---
 

@@ -1,10 +1,10 @@
-# MCP Demo Workflow
+# MCP demo workflow
 
 This project demonstrates a complete MCP (Model Context Protocol) workflow for generating documentation:
 
-1. **MCP Client** in the docs infrastructure connects to external MCP servers
-2. **Pet Store MCP Server** provides API documentation from OpenAPI specs
-3. **Starlight MCP Server** manages existing documentation
+1. **MCP client** in the docs infrastructure connects to external MCP servers
+2. **Pet Store MCP server** provides API documentation from OpenAPI specs
+3. **Starlight MCP server** manages existing documentation
 4. **Automated documentation generation** combines content from multiple sources
 
 ## 🏗️ Architecture
@@ -21,9 +21,9 @@ This project demonstrates a complete MCP (Model Context Protocol) workflow for g
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
-## 🚀 Quick Start
+## 🚀 Quick start
 
-### 1. Install Dependencies
+### 1. Install dependencies
 
 ```bash
 # Install main project dependencies
@@ -35,7 +35,7 @@ cd petstore-mcp-server && npm install && cd ..
 cd mcp-client && npm install && cd ..
 ```
 
-### 2. Run the Complete Demo
+### 2. Run the complete demo
 
 ```bash
 # This will:
@@ -47,20 +47,20 @@ cd mcp-client && npm install && cd ..
 npm run demo
 ```
 
-### 3. View the Documentation
+### 3. View the documentation
 
 ```bash
 npm run dev
 # Open http://localhost:4321
 ```
 
-## 📋 Individual Components
+## 📋 Individual components
 
-### Pet Store MCP Server
+### Pet Store MCP server
 
 Located in `petstore-mcp-server/`, this server provides API documentation tools:
 
-**Available Tools:**
+**Available tools:**
 - `get_api_specification` - Get complete OpenAPI spec
 - `list_endpoints` - List all API endpoints
 - `get_endpoint_details` - Get details for specific endpoint
@@ -73,11 +73,11 @@ Located in `petstore-mcp-server/`, this server provides API documentation tools:
 npm run demo-petstore
 ```
 
-### Starlight MCP Server
+### Starlight MCP server
 
 Located in `mcp-server/`, this server manages existing documentation:
 
-**Available Tools:**
+**Available tools:**
 - `list_docs` - List all documentation pages
 - `search_docs` - Search documentation content
 - `get_doc_content` - Get specific page content
@@ -88,11 +88,11 @@ Located in `mcp-server/`, this server manages existing documentation:
 npm run demo-starlight
 ```
 
-### MCP Client
+### MCP client
 
 Located in `mcp-client/`, this orchestrates the entire workflow:
 
-**Key Features:**
+**Key features:**
 - Connects to multiple MCP servers simultaneously
 - Generates API documentation from Pet Store server
 - Integrates with existing Starlight documentation
@@ -104,9 +104,9 @@ Located in `mcp-client/`, this orchestrates the entire workflow:
 npm run demo
 ```
 
-## 🔧 Integration Options
+## 🔧 Integration options
 
-### Option 1: Build-time Generation
+### Option 1: Build-time generation
 
 The documentation is automatically generated during the build process:
 
@@ -114,7 +114,7 @@ The documentation is automatically generated during the build process:
 npm run build  # This runs generate-docs first
 ```
 
-### Option 2: Manual Generation
+### Option 2: Manual generation
 
 Generate documentation manually:
 
@@ -122,7 +122,7 @@ Generate documentation manually:
 npm run generate-docs
 ```
 
-### Option 3: Development Workflow
+### Option 3: Development workflow
 
 For development, you can run the demo and then start the dev server:
 
@@ -131,7 +131,7 @@ npm run demo
 npm run dev
 ```
 
-## 📁 Generated Files
+## 📁 Generated files
 
 After running the demo, these files will be created:
 
@@ -144,50 +144,50 @@ src/content/docs/
 
 ## 🛠️ Customization
 
-### Adding New API Servers
+### Adding new API servers
 
 1. Create a new MCP server (see `petstore-mcp-server/` as example)
 2. Add connection logic to `mcp-client/client.js`
 3. Update the documentation generation workflow
 
-### Modifying Documentation Format
+### Modifying documentation format
 
 Edit the `generateMarkdownDocs` method in `petstore-mcp-server/server.js` to customize the output format.
 
-### Adding New Documentation Sources
+### Adding new documentation sources
 
 Extend the `StarlightMCPClient` class to connect to additional MCP servers and integrate their content.
 
-## 🔍 API Documentation Features
+## 🔍 API documentation features
 
 The generated Pet Store API documentation includes:
 
-- **Complete API Reference** - All endpoints with parameters and responses
-- **Data Models** - Detailed schema documentation
+- **Complete API reference** - All endpoints with parameters and responses
+- **Data models** - Detailed schema documentation
 - **Examples** - Request/response examples
-- **Server Information** - Available environments
-- **Contact Information** - API support details
+- **Server information** - Available environments
+- **Contact information** - API support details
 
-## 🎯 Use Cases
+## 🎯 Use cases
 
 This workflow is ideal for:
 
-1. **API Documentation Sites** - Automatically generate docs from OpenAPI specs
-2. **Multi-source Documentation** - Combine content from different MCP servers
-3. **CI/CD Integration** - Generate docs as part of build process
-4. **Developer Portals** - Create comprehensive developer documentation
-5. **Microservices Documentation** - Aggregate docs from multiple services
+1. **API documentation sites** - Automatically generate docs from OpenAPI specs
+2. **Multi-source documentation** - Combine content from different MCP servers
+3. **CI/CD integration** - Generate docs as part of build process
+4. **Developer portals** - Create comprehensive developer documentation
+5. **Microservices documentation** - Aggregate docs from multiple services
 
 ## 🚨 Troubleshooting
 
-### Common Issues
+### Common issues
 
 1. **Port conflicts**: Ensure no other processes are using the required ports
 2. **Permission errors**: Make sure all scripts are executable (`chmod +x *.js`)
 3. **Missing dependencies**: Run `npm install` in all directories
 4. **Path issues**: Ensure you're running commands from the project root
 
-### Debug Mode
+### Debug mode
 
 For debugging, you can run individual components:
 
@@ -202,13 +202,13 @@ cd mcp-server && npm run demo
 cd mcp-client && node client.js
 ```
 
-## 📚 Next Steps
+## 📚 Next steps
 
 1. **Extend the Pet Store API** - Add more endpoints and schemas
-2. **Add Authentication** - Implement secure MCP server connections
-3. **Create More MCP Servers** - Add servers for other documentation sources
-4. **Implement Caching** - Cache generated documentation for performance
-5. **Add Webhooks** - Trigger documentation updates automatically
+2. **Add authentication** - Implement secure MCP server connections
+3. **Create more MCP servers** - Add servers for other documentation sources
+4. **Implement caching** - Cache generated documentation for performance
+5. **Add webhooks** - Trigger documentation updates automatically
 
 ## 🤝 Contributing
 
