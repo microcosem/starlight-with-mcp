@@ -5,9 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "npm run generate-docs && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "generate-docs": "node mcp-client/generate-docs.js",
+    "demo": "node mcp-client/demo.js",
+    "demo-petstore": "node petstore-mcp-server/demo.js",
+    "demo-starlight": "node mcp-server/working-demo.js",
+    "test-workflow": "node test-workflow.js"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.35.2",

@@ -1,0 +1,19 @@
+{
+  "name": "petstore-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP server for Pet Store API documentation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test.js",
+    "demo": "node demo.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0"
+  },
+  "keywords": ["mcp", "api", "petstore", "openapi", "swagger"],
+  "author": "",
+  "license": "MIT"
+} 
