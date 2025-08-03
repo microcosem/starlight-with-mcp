@@ -1,0 +1,204 @@
+---
+title: API Overview
+description: Understanding the Pet Store API structure, conventions, and design principles
+---
+
+# API Overview
+
+The Pet Store API is a RESTful API designed for managing pets and orders. This overview explains the API structure, conventions, and design principles.
+
+## API Design Principles
+
+### RESTful Architecture
+
+Our API follows REST (Representational State Transfer) principles:
+
+- **Resources**: Everything is a resource (pets, orders, categories)
+- **HTTP Methods**: Use standard HTTP methods (GET, POST, PUT, DELETE)
+- **Stateless**: Each request contains all necessary information
+- **Uniform Interface**: Consistent patterns across all endpoints
+
+### Base URL
+
+```
+Production: https://api.petstore.com/v1
+Staging:    https://staging-api.petstore.com/v1
+```
+
+## Resource Structure
+
+### Pets
+
+Pets are the core resource in our API. Each pet has:
+
+- **ID**: Unique identifier (auto-generated)
+- **Name**: Pet's name
+- **Category**: Type of animal (Dogs, Cats, etc.)
+- **Photo URLs**: Array of image URLs
+- **Tags**: Descriptive tags for categorization
+- **Status**: Current availability status
+
+### Orders
+
+Orders represent purchases of pets:
+
+- **ID**: Unique identifier (auto-generated)
+- **Pet ID**: Reference to the pet being ordered
+- **Quantity**: Number of pets ordered
+- **Status**: Order processing status
+- **Ship Date**: When the order was shipped
+- **Complete**: Whether the order is finalized
+
+## HTTP Methods
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `GET` | Retrieve resources | `GET /pets` - List all pets |
+| `POST` | Create new resources | `POST /pets` - Create a pet |
+| `PUT` | Update existing resources | `PUT /pets/{id}` - Update a pet |
+| `DELETE` | Remove resources | `DELETE /pets/{id}` - Delete a pet |
+
+## Response Format
+
+All responses are returned in JSON format with consistent structure:
+
+### Success Response
+
+```json
+{
+  "id": 1,
+  "name": "Buddy",
+  "category": {
+    "id": 1,
+    "name": "Dogs"
+  },
+  "photoUrls": ["https://example.com/buddy.jpg"],
+  "tags": [
+    {
+      "id": 1,
+      "name": "friendly"
+    }
+  ],
+  "status": "available"
+}
+```
+
+### Error Response
+
+```json
+{
+  "code": 404,
+  "message": "Pet with ID 999 not found"
+}
+```
+
+## Status Codes
+
+| Code | Description | Usage |
+|------|-------------|-------|
+| 200 | OK | Successful GET, PUT requests |
+| 201 | Created | Successful POST requests |
+| 204 | No Content | Successful DELETE requests |
+| 400 | Bad Request | Invalid request data |
+| 404 | Not Found | Resource doesn't exist |
+| 500 | Internal Server Error | Server error |
+
+## Pagination
+
+For endpoints that return lists, pagination is supported:
+
+```
+GET /pets?limit=10&offset=20
+```
+
+- `limit`: Maximum number of items to return (default: 20, max: 100)
+- `offset`: Number of items to skip (default: 0)
+
+## Filtering
+
+Some endpoints support filtering:
+
+```
+GET /pets?status=available
+GET /pets?category=dogs
+```
+
+## Data Types
+
+### Common Types
+
+- **String**: Text values
+- **Integer**: Whole numbers
+- **Boolean**: True/false values
+- **Array**: Lists of values
+- **Object**: Complex data structures
+- **Date/Time**: ISO 8601 format (`2023-12-01T10:30:00Z`)
+
+### Validation
+
+- **Required Fields**: Must be provided in requests
+- **Enums**: Limited to specific values (e.g., status: "available", "pending", "sold")
+- **Ranges**: Numeric values with min/max constraints
+- **Formats**: String validation (email, URL, etc.)
+
+## Rate Limiting
+
+Currently, the API has no rate limits for demonstration purposes. In production, limits would be:
+
+- **1000 requests per hour** per IP address
+- **100 requests per minute** per IP address
+
+Rate limit headers are included in responses:
+
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+```
+
+## Versioning
+
+The API uses URL versioning:
+
+- Current version: `v1`
+- Future versions: `v2`, `v3`, etc.
+- Deprecation notices will be provided in advance
+
+## Security
+
+### Authentication
+
+Currently, the demo API requires no authentication. In production:
+
+- **API Keys**: Required for all requests
+- **OAuth 2.0**: For user-specific operations
+- **HTTPS**: All requests must use HTTPS
+
+### Headers
+
+Required headers:
+
+```
+Content-Type: application/json
+Authorization: Bearer YOUR_API_KEY
+```
+
+## SDKs and Libraries
+
+Official SDKs are available for:
+
+- **JavaScript/Node.js**: `npm install petstore-api`
+- **Python**: `pip install petstore-api`
+- **Java**: Maven dependency
+- **C#**: NuGet package
+
+## Support
+
+- **Documentation**: This site
+- **API Status**: [status.petstore.com](https://status.petstore.com)
+- **Support Email**: support@petstore.com
+- **GitHub Issues**: [github.com/petstore/api](https://github.com/petstore/api)
+
+---
+
+> **📖 Next:** Explore the [complete API reference](/api/petstore-api/) for detailed endpoint documentation. 

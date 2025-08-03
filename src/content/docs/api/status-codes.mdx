@@ -1,0 +1,400 @@
+---
+title: Status Codes
+description: Complete reference of HTTP status codes used by the Pet Store API
+---
+
+# HTTP Status Codes
+
+This page provides a complete reference of HTTP status codes used by the Pet Store API, including their meanings and common use cases.
+
+## Success Responses
+
+### 200 OK
+
+**Meaning:** The request was successful.
+
+**Common Use Cases:**
+- GET requests returning data
+- PUT requests updating resources
+- PATCH requests partially updating resources
+
+**Example:**
+```json
+{
+  "id": 1,
+  "name": "Buddy",
+  "status": "available"
+}
+```
+
+### 201 Created
+
+**Meaning:** The request was successful and a new resource was created.
+
+**Common Use Cases:**
+- POST requests creating new resources
+- PUT requests creating resources with specific IDs
+
+**Example:**
+```json
+{
+  "id": 123,
+  "name": "Fluffy",
+  "status": "available",
+  "created_at": "2023-12-01T10:30:00Z"
+}
+```
+
+### 204 No Content
+
+**Meaning:** The request was successful but there is no content to return.
+
+**Common Use Cases:**
+- DELETE requests
+- PUT/PATCH requests that don't return the updated resource
+
+**Response:** No response body
+
+## Client Error Responses
+
+### 400 Bad Request
+
+**Meaning:** The request was malformed or invalid.
+
+**Common Causes:**
+- Missing required fields
+- Invalid data types
+- Malformed JSON
+- Invalid query parameters
+
+**Example:**
+```json
+{
+  "code": 400,
+  "message": "Missing required field: name"
+}
+```
+
+### 401 Unauthorized
+
+**Meaning:** Authentication is required and has failed or has not been provided.
+
+**Common Causes:**
+- Missing API key
+- Invalid API key
+- Expired API key
+
+**Example:**
+```json
+{
+  "code": 401,
+  "message": "Invalid or missing API key"
+}
+```
+
+### 403 Forbidden
+
+**Meaning:** The server understood the request but refuses to authorize it.
+
+**Common Causes:**
+- Insufficient permissions
+- API key doesn't have required scope
+- Resource access denied
+
+**Example:**
+```json
+{
+  "code": 403,
+  "message": "Insufficient permissions for this operation"
+}
+```
+
+### 404 Not Found
+
+**Meaning:** The requested resource was not found.
+
+**Common Causes:**
+- Invalid resource ID
+- Resource has been deleted
+- Incorrect URL path
+
+**Example:**
+```json
+{
+  "code": 404,
+  "message": "Pet with ID 999 not found"
+}
+```
+
+### 405 Method Not Allowed
+
+**Meaning:** The HTTP method is not allowed for the requested resource.
+
+**Common Causes:**
+- Using POST instead of PUT
+- Using GET on a write-only endpoint
+- Using DELETE on a read-only resource
+
+**Example:**
+```json
+{
+  "code": 405,
+  "message": "Method POST not allowed for this endpoint"
+}
+```
+
+### 409 Conflict
+
+**Meaning:** The request conflicts with the current state of the resource.
+
+**Common Causes:**
+- Duplicate resource creation
+- Business rule violations
+- Resource state conflicts
+
+**Example:**
+```json
+{
+  "code": 409,
+  "message": "Pet with this name already exists"
+}
+```
+
+### 422 Unprocessable Entity
+
+**Meaning:** The request was well-formed but cannot be processed due to semantic errors.
+
+**Common Causes:**
+- Validation errors
+- Business logic violations
+- Invalid data relationships
+
+**Example:**
+```json
+{
+  "code": 422,
+  "message": "Cannot order pet with status 'sold'"
+}
+```
+
+### 429 Too Many Requests
+
+**Meaning:** The user has sent too many requests in a given amount of time.
+
+**Common Causes:**
+- Rate limit exceeded
+- Too many requests per minute/hour
+
+**Example:**
+```json
+{
+  "code": 429,
+  "message": "Rate limit exceeded. Try again in 60 seconds."
+}
+```
+
+## Server Error Responses
+
+### 500 Internal Server Error
+
+**Meaning:** An unexpected error occurred on the server.
+
+**Common Causes:**
+- Server configuration issues
+- Database connection problems
+- Unhandled exceptions
+
+**Example:**
+```json
+{
+  "code": 500,
+  "message": "Internal server error"
+}
+```
+
+### 502 Bad Gateway
+
+**Meaning:** The server received an invalid response from an upstream server.
+
+**Common Causes:**
+- Upstream service unavailable
+- Network connectivity issues
+- Service timeout
+
+**Example:**
+```json
+{
+  "code": 502,
+  "message": "Bad gateway"
+}
+```
+
+### 503 Service Unavailable
+
+**Meaning:** The server is temporarily unable to handle the request.
+
+**Common Causes:**
+- Server maintenance
+- High load
+- Service temporarily down
+
+**Example:**
+```json
+{
+  "code": 503,
+  "message": "Service temporarily unavailable"
+}
+```
+
+### 504 Gateway Timeout
+
+**Meaning:** The server did not receive a timely response from an upstream server.
+
+**Common Causes:**
+- Upstream service timeout
+- Network latency
+- Service overload
+
+**Example:**
+```json
+{
+  "code": 504,
+  "message": "Gateway timeout"
+}
+```
+
+## Status Code Reference Table
+
+| Code | Name | Category | Description |
+|------|------|----------|-------------|
+| 200 | OK | Success | Request successful |
+| 201 | Created | Success | Resource created successfully |
+| 204 | No Content | Success | Request successful, no content |
+| 400 | Bad Request | Client Error | Invalid request |
+| 401 | Unauthorized | Client Error | Authentication required |
+| 403 | Forbidden | Client Error | Access denied |
+| 404 | Not Found | Client Error | Resource not found |
+| 405 | Method Not Allowed | Client Error | HTTP method not supported |
+| 409 | Conflict | Client Error | Resource conflict |
+| 422 | Unprocessable Entity | Client Error | Validation failed |
+| 429 | Too Many Requests | Client Error | Rate limit exceeded |
+| 500 | Internal Server Error | Server Error | Unexpected server error |
+| 502 | Bad Gateway | Server Error | Upstream service error |
+| 503 | Service Unavailable | Server Error | Service temporarily down |
+| 504 | Gateway Timeout | Server Error | Upstream service timeout |
+
+## Handling Status Codes
+
+### JavaScript Example
+
+```javascript
+async function handleApiResponse(response) {
+  switch (response.status) {
+    case 200:
+    case 201:
+      return await response.json();
+      
+    case 204:
+      return null;
+      
+    case 400:
+      throw new Error('Invalid request data');
+      
+    case 401:
+      throw new Error('Authentication required');
+      
+    case 403:
+      throw new Error('Access denied');
+      
+    case 404:
+      throw new Error('Resource not found');
+      
+    case 429:
+      throw new Error('Rate limit exceeded');
+      
+    case 500:
+    case 502:
+    case 503:
+    case 504:
+      throw new Error('Server error');
+      
+    default:
+      throw new Error(`Unexpected status: ${response.status}`);
+  }
+}
+```
+
+### Python Example
+
+```python
+import requests
+
+def handle_api_response(response):
+    if response.status_code in [200, 201]:
+        return response.json()
+    elif response.status_code == 204:
+        return None
+    elif response.status_code == 400:
+        raise ValueError('Invalid request data')
+    elif response.status_code == 401:
+        raise ValueError('Authentication required')
+    elif response.status_code == 403:
+        raise ValueError('Access denied')
+    elif response.status_code == 404:
+        raise ValueError('Resource not found')
+    elif response.status_code == 429:
+        raise ValueError('Rate limit exceeded')
+    elif response.status_code >= 500:
+        raise RuntimeError('Server error')
+    else:
+        raise ValueError(f'Unexpected status: {response.status_code}')
+```
+
+## Best Practices
+
+### 1. Always Check Status Codes
+
+```javascript
+const response = await fetch(url);
+if (!response.ok) {
+  const error = await response.json();
+  throw new Error(`${response.status}: ${error.message}`);
+}
+```
+
+### 2. Handle Specific Error Types
+
+```javascript
+if (response.status === 429) {
+  // Handle rate limiting
+  const resetTime = response.headers.get('X-RateLimit-Reset');
+  await waitForRateLimit(resetTime);
+}
+```
+
+### 3. Provide User-Friendly Messages
+
+```javascript
+function getUserFriendlyMessage(statusCode) {
+  const messages = {
+    400: 'Please check your request data',
+    401: 'Please log in to continue',
+    403: 'You don\'t have permission for this action',
+    404: 'The requested resource was not found',
+    429: 'Too many requests. Please try again later',
+    500: 'Something went wrong. Please try again'
+  };
+  
+  return messages[statusCode] || 'An unexpected error occurred';
+}
+```
+
+## Next Steps
+
+- **[Error Handling](/api/errors/)** - Learn about comprehensive error handling
+- **[Rate Limiting](/api/rate-limiting/)** - Understand rate limit responses
+- **[API Reference](/api/petstore-api/)** - See status codes in action
+
+---
+
+> **💡 Tip:** Always handle both success and error status codes in your applications to provide a robust user experience. 

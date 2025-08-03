@@ -1,0 +1,169 @@
+---
+title: Authentication
+description: Learn how to authenticate your API requests
+---
+
+# Authentication
+
+This guide explains how to authenticate your requests to the Pet Store API.
+
+## Current Status
+
+**Note:** The current demo API does not require authentication. This guide outlines the authentication methods that would be implemented in a production environment.
+
+## Authentication Methods
+
+### API Key Authentication
+
+For most API operations, you'll use an API key for authentication:
+
+```bash
+curl -X GET "https://api.petstore.com/v1/pets" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+### OAuth 2.0
+
+For user-specific operations, OAuth 2.0 will be supported:
+
+1. **Register your application** to get client credentials
+2. **Request authorization** from users
+3. **Exchange authorization code** for access token
+4. **Use access token** in API requests
+
+## Getting API Keys
+
+### 1. Create an Account
+
+Visit [petstore.com/register](https://petstore.com/register) to create your account.
+
+### 2. Generate API Key
+
+1. Log in to your account
+2. Navigate to **API Keys** section
+3. Click **Generate New Key**
+4. Copy and securely store your API key
+
+### 3. Set Permissions
+
+Configure your API key with appropriate permissions:
+
+- **Read Only**: View pets and orders
+- **Read/Write**: Create, update, and delete pets
+- **Admin**: Full access including user management
+
+## Using API Keys
+
+### HTTP Headers
+
+Include your API key in the `Authorization` header:
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+### JavaScript Example
+
+```javascript
+const response = await fetch('https://api.petstore.com/v1/pets', {
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  }
+});
+```
+
+### Python Example
+
+```python
+import requests
+
+headers = {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+}
+
+response = requests.get('https://api.petstore.com/v1/pets', headers=headers)
+```
+
+## Security Best Practices
+
+### 1. Keep API Keys Secure
+
+- **Never commit API keys** to version control
+- **Use environment variables** to store keys
+- **Rotate keys regularly** (every 90 days)
+- **Limit key permissions** to minimum required
+
+### 2. Environment Variables
+
+```bash
+# .env file
+PETSTORE_API_KEY=your_api_key_here
+```
+
+```javascript
+// JavaScript
+const apiKey = process.env.PETSTORE_API_KEY;
+```
+
+```python
+# Python
+import os
+api_key = os.environ.get('PETSTORE_API_KEY')
+```
+
+### 3. Key Rotation
+
+When rotating API keys:
+
+1. **Generate new key** before revoking old one
+2. **Update applications** with new key
+3. **Test thoroughly** before revoking old key
+4. **Revoke old key** once new key is working
+
+## Error Responses
+
+### 401 Unauthorized
+
+```json
+{
+  "code": 401,
+  "message": "Invalid or missing API key"
+}
+```
+
+### 403 Forbidden
+
+```json
+{
+  "code": 403,
+  "message": "Insufficient permissions for this operation"
+}
+```
+
+## Rate Limiting
+
+Authenticated requests have higher rate limits:
+
+- **1000 requests per hour** (vs 100 for unauthenticated)
+- **100 requests per minute** (vs 10 for unauthenticated)
+
+Rate limit headers are included in responses:
+
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+```
+
+## Next Steps
+
+- **[Quick Start Guide](/guides/quick-start/)** - Make your first authenticated request
+- **[Error Handling](/api/errors/)** - Handle authentication errors
+- **[API Reference](/api/petstore-api/)** - Explore all endpoints
+
+---
+
+> **🔒 Security Note:** Always use HTTPS in production and never expose API keys in client-side code. 

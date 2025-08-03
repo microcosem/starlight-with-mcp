@@ -1,0 +1,132 @@
+---
+export interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<div class="hero">
+	<div class="hero-content">
+		<h1 class="hero-title">{title}</h1>
+		{description && <p class="hero-description">{description}</p>}
+		<div class="hero-actions">
+			<a href="/guides/quick-start/" class="cta-button">
+				Get Started
+				<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+					<path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+				</svg>
+			</a>
+			<a href="/api/petstore-api/" class="secondary-button">
+				View API Reference
+			</a>
+		</div>
+	</div>
+	{image && (
+		<div class="hero-image">
+			<img src={image} alt="API Documentation" />
+		</div>
+	)}
+</div>
+
+<style>
+	.hero {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 2rem;
+		align-items: center;
+		padding: 2rem 0;
+		margin: 2rem 0;
+		border-bottom: 1px solid var(--sl-color-accent-low);
+	}
+
+	.hero-content {
+		max-width: 600px;
+	}
+
+	.hero-title {
+		font-size: 3rem;
+		font-weight: 700;
+		line-height: 1.1;
+		margin: 0 0 1rem 0;
+		background: linear-gradient(135deg, var(--sl-color-accent), var(--sl-color-accent-high));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.hero-description {
+		font-size: 1.25rem;
+		line-height: 1.6;
+		color: var(--sl-color-text-2);
+		margin: 0 0 2rem 0;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.cta-button, .secondary-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1.5rem;
+		border-radius: 0.5rem;
+		text-decoration: none;
+		font-weight: 600;
+		transition: all 0.2s ease;
+	}
+
+	.cta-button {
+		background: var(--sl-color-accent);
+		color: var(--sl-color-white);
+	}
+
+	.cta-button:hover {
+		background: var(--sl-color-accent-high);
+		transform: translateY(-1px);
+	}
+
+	.secondary-button {
+		background: transparent;
+		color: var(--sl-color-text-1);
+		border: 2px solid var(--sl-color-accent);
+	}
+
+	.secondary-button:hover {
+		background: var(--sl-color-accent);
+		color: var(--sl-color-white);
+	}
+
+	.hero-image {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.hero-image img {
+		max-width: 300px;
+		height: auto;
+		border-radius: 1rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	}
+
+	@media (max-width: 768px) {
+		.hero {
+			grid-template-columns: 1fr;
+			text-align: center;
+		}
+
+		.hero-title {
+			font-size: 2.5rem;
+		}
+
+		.hero-actions {
+			justify-content: center;
+		}
+	}
+</style> 

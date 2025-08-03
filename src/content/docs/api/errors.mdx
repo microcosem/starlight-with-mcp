@@ -1,0 +1,309 @@
+---
+title: Error Handling
+description: Understanding and handling API errors effectively
+---
+
+# Error Handling
+
+This guide explains how to handle errors from the Pet Store API effectively. All errors follow a consistent format and include helpful information for debugging.
+
+## Error Response Format
+
+All error responses follow this consistent structure:
+
+```json
+{
+  "code": 404,
+  "message": "Pet with ID 999 not found"
+}
+```
+
+### Error Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `code` | Integer | HTTP status code |
+| `message` | String | Human-readable error description |
+
+## HTTP Status Codes
+
+### Client Errors (4xx)
+
+| Code | Name | Description | Common Causes |
+|------|------|-------------|---------------|
+| 400 | Bad Request | Invalid request data | Missing required fields, invalid data types |
+| 401 | Unauthorized | Authentication required | Missing or invalid API key |
+| 403 | Forbidden | Access denied | Insufficient permissions |
+| 404 | Not Found | Resource doesn't exist | Invalid ID, deleted resource |
+| 405 | Method Not Allowed | HTTP method not supported | Using POST instead of PUT |
+| 409 | Conflict | Resource conflict | Duplicate data, business rule violation |
+| 422 | Unprocessable Entity | Validation failed | Invalid data format, business logic errors |
+| 429 | Too Many Requests | Rate limit exceeded | Too many requests in time period |
+
+### Server Errors (5xx)
+
+| Code | Name | Description |
+|------|------|-------------|
+| 500 | Internal Server Error | Unexpected server error |
+| 502 | Bad Gateway | Upstream service error |
+| 503 | Service Unavailable | Service temporarily unavailable |
+| 504 | Gateway Timeout | Request timeout |
+
+## Common Error Scenarios
+
+### 400 Bad Request
+
+**Missing Required Fields:**
+```json
+{
+  "code": 400,
+  "message": "Missing required field: name"
+}
+```
+
+**Invalid Data Type:**
+```json
+{
+  "code": 400,
+  "message": "Invalid data type for field 'quantity'. Expected integer, got string."
+}
+```
+
+**Validation Error:**
+```json
+{
+  "code": 400,
+  "message": "Invalid limit parameter. Must be between 1 and 100."
+}
+```
+
+### 404 Not Found
+
+**Resource Not Found:**
+```json
+{
+  "code": 404,
+  "message": "Pet with ID 999 not found"
+}
+```
+
+**Invalid Endpoint:**
+```json
+{
+  "code": 404,
+  "message": "Endpoint /pets/invalid not found"
+}
+```
+
+### 422 Unprocessable Entity
+
+**Business Logic Error:**
+```json
+{
+  "code": 422,
+  "message": "Cannot order pet with status 'sold'"
+}
+```
+
+**Data Validation:**
+```json
+{
+  "code": 422,
+  "message": "Pet name must be between 1 and 50 characters"
+}
+```
+
+## Error Handling Examples
+
+### JavaScript (Node.js)
+
+```javascript
+async function handleApiRequest(url, options = {}) {
+  try {
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`${error.code}: ${error.message}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('API Error:', error.message);
+    
+    // Handle specific error codes
+    if (error.message.includes('404')) {
+      console.log('Resource not found');
+    } else if (error.message.includes('400')) {
+      console.log('Invalid request data');
+    } else if (error.message.includes('429')) {
+      console.log('Rate limit exceeded');
+    }
+    
+    throw error;
+  }
+}
+
+// Usage
+try {
+  const pet = await handleApiRequest('https://api.petstore.com/v1/pets/999');
+  console.log(pet);
+} catch (error) {
+  // Handle error appropriately
+}
+```
+
+### Python
+
+```python
+import requests
+from requests.exceptions import RequestException
+
+def handle_api_request(url, method='GET', data=None):
+    try:
+        if method == 'GET':
+            response = requests.get(url)
+        elif method == 'POST':
+            response = requests.post(url, json=data)
+        elif method == 'PUT':
+            response = requests.put(url, json=data)
+        elif method == 'DELETE':
+            response = requests.delete(url)
+        
+        response.raise_for_status()
+        return response.json()
+        
+    except requests.exceptions.HTTPError as e:
+        error_data = e.response.json()
+        error_message = f"{error_data['code']}: {error_data['message']}"
+        
+        if e.response.status_code == 404:
+            print("Resource not found")
+        elif e.response.status_code == 400:
+            print("Invalid request data")
+        elif e.response.status_code == 429:
+            print("Rate limit exceeded")
+        
+        raise Exception(error_message)
+    except RequestException as e:
+        print(f"Network error: {e}")
+        raise
+
+# Usage
+try:
+    pet = handle_api_request('https://api.petstore.com/v1/pets/999')
+    print(pet)
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+### cURL
+
+```bash
+# Check for errors in cURL
+curl -X GET "https://api.petstore.com/v1/pets/999" \
+  -H "Content-Type: application/json" \
+  -w "\nHTTP Status: %{http_code}\n" \
+  -s
+```
+
+## Best Practices
+
+### 1. Always Check Response Status
+
+```javascript
+if (!response.ok) {
+  const error = await response.json();
+  // Handle error
+}
+```
+
+### 2. Use Specific Error Handling
+
+```javascript
+switch (error.code) {
+  case 400:
+    // Handle bad request
+    break;
+  case 404:
+    // Handle not found
+    break;
+  case 429:
+    // Handle rate limiting
+    break;
+  default:
+    // Handle other errors
+}
+```
+
+### 3. Implement Retry Logic
+
+```javascript
+async function retryRequest(url, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await fetch(url, options);
+      
+      if (response.status === 429) {
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+    }
+  }
+}
+```
+
+### 4. Log Errors Appropriately
+
+```javascript
+function logError(error, context) {
+  console.error('API Error:', {
+    code: error.code,
+    message: error.message,
+    context: context,
+    timestamp: new Date().toISOString()
+  });
+}
+```
+
+## Rate Limiting
+
+When you hit rate limits (429 errors), the response includes headers with limit information:
+
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1640995200
+```
+
+Handle rate limiting by:
+
+1. **Exponential Backoff**: Wait progressively longer between retries
+2. **Respect Headers**: Use `X-RateLimit-Reset` to know when limits reset
+3. **Queue Requests**: Implement request queuing for high-volume applications
+
+## Debugging Tips
+
+1. **Check Request Data**: Ensure all required fields are present
+2. **Validate Data Types**: Make sure data matches expected formats
+3. **Review Headers**: Verify Content-Type and Authorization headers
+4. **Test with cURL**: Use cURL to test requests manually
+5. **Check API Status**: Verify the API is operational
+
+## Getting Help
+
+If you encounter persistent errors:
+
+1. **Check Documentation**: Review the [API Reference](/api/petstore-api/)
+2. **Validate Your Request**: Use the interactive documentation
+3. **Contact Support**: Email support@petstore.com with error details
+4. **Check Status Page**: Visit [status.petstore.com](https://status.petstore.com)
+
+---
+
+> **⚠️ Important:** Always handle errors gracefully in production applications. Never expose raw error messages to end users. 

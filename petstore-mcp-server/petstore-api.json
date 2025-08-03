@@ -2,57 +2,64 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Pet Store API",
-    "description": "A sample Pet Store API for demonstration purposes",
+    "description": "A comprehensive REST API for managing pets, orders, and store operations. This API provides full CRUD operations for pets and order management with proper error handling and validation.",
     "version": "1.0.0",
     "contact": {
       "name": "API Support",
-      "email": "support@petstore.com"
+      "email": "support@petstore.com",
+      "url": "https://petstore.com/support"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
     }
   },
   "servers": [
     {
       "url": "https://api.petstore.com/v1",
-      "description": "Production server"
+      "description": "Production server - Use for live applications"
     },
     {
       "url": "https://staging-api.petstore.com/v1",
-      "description": "Staging server"
+      "description": "Staging server - Use for testing and development"
     }
   ],
   "paths": {
     "/pets": {
       "get": {
         "summary": "List all pets",
-        "description": "Returns a list of all pets in the store",
+        "description": "Retrieve a paginated list of all pets in the store. You can filter by status and limit the number of results returned.",
         "operationId": "listPets",
         "tags": ["pets"],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "Maximum number of pets to return",
+            "description": "Maximum number of pets to return (1-100)",
             "required": false,
             "schema": {
               "type": "integer",
               "default": 20,
               "minimum": 1,
               "maximum": 100
-            }
+            },
+            "example": 10
           },
           {
             "name": "status",
             "in": "query",
-            "description": "Filter pets by status",
+            "description": "Filter pets by their current status in the store",
             "required": false,
             "schema": {
               "type": "string",
               "enum": ["available", "pending", "sold"]
-            }
+            },
+            "example": "available"
           }
         ],
         "responses": {
           "200": {
-            "description": "A list of pets",
+            "description": "Successfully retrieved list of pets",
             "content": {
               "application/json": {
                 "schema": {
@@ -60,16 +67,38 @@
                   "items": {
                     "$ref": "#/components/schemas/Pet"
                   }
-                }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Buddy",
+                    "category": {
+                      "id": 1,
+                      "name": "Dogs"
+                    },
+                    "photoUrls": ["https://example.com/buddy.jpg"],
+                    "tags": [
+                      {
+                        "id": 1,
+                        "name": "friendly"
+                      }
+                    ],
+                    "status": "available"
+                  }
+                ]
               }
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Bad request - Invalid parameters provided",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Invalid limit parameter. Must be between 1 and 100."
                 }
               }
             }
@@ -77,8 +106,8 @@
         }
       },
       "post": {
-        "summary": "Create a pet",
-        "description": "Add a new pet to the store",
+        "summary": "Create a new pet",
+        "description": "Add a new pet to the store. The pet will be created with the provided information and assigned a unique ID.",
         "operationId": "createPet",
         "tags": ["pets"],
         "requestBody": {
@@ -88,6 +117,21 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Pet"
+              },
+              "example": {
+                "name": "Fluffy",
+                "category": {
+                  "id": 2,
+                  "name": "Cats"
+                },
+                "photoUrls": ["https://example.com/fluffy.jpg"],
+                "tags": [
+                  {
+                    "id": 2,
+                    "name": "playful"
+                  }
+                ],
+                "status": "available"
               }
             }
           }
@@ -104,7 +148,7 @@
             }
           },
           "400": {
-            "description": "Invalid input",
+            "description": "Bad request - Invalid pet data",
             "content": {
               "application/json": {
                 "schema": {
@@ -119,24 +163,25 @@
     "/pets/{petId}": {
       "get": {
         "summary": "Get pet by ID",
-        "description": "Returns a single pet by its ID",
+        "description": "Retrieve detailed information about a specific pet by its unique identifier.",
         "operationId": "getPetById",
         "tags": ["pets"],
         "parameters": [
           {
             "name": "petId",
             "in": "path",
-            "description": "ID of the pet to retrieve",
+            "description": "Unique identifier of the pet",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "Pet found",
+            "description": "Successfully retrieved pet information",
             "content": {
               "application/json": {
                 "schema": {
@@ -151,6 +196,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Pet with ID 999 not found"
                 }
               }
             }
@@ -158,15 +207,15 @@
         }
       },
       "put": {
-        "summary": "Update pet",
-        "description": "Update an existing pet",
+        "summary": "Update pet information",
+        "description": "Update the information for an existing pet. All fields will be replaced with the provided data.",
         "operationId": "updatePet",
         "tags": ["pets"],
         "parameters": [
           {
             "name": "petId",
             "in": "path",
-            "description": "ID of the pet to update",
+            "description": "Unique identifier of the pet to update",
             "required": true,
             "schema": {
               "type": "integer",
@@ -209,15 +258,15 @@
         }
       },
       "delete": {
-        "summary": "Delete pet",
-        "description": "Delete a pet from the store",
+        "summary": "Delete a pet",
+        "description": "Remove a pet from the store permanently. This action cannot be undone.",
         "operationId": "deletePet",
         "tags": ["pets"],
         "parameters": [
           {
             "name": "petId",
             "in": "path",
-            "description": "ID of the pet to delete",
+            "description": "Unique identifier of the pet to delete",
             "required": true,
             "schema": {
               "type": "integer",
@@ -245,7 +294,7 @@
     "/orders": {
       "get": {
         "summary": "List all orders",
-        "description": "Returns a list of all orders",
+        "description": "Retrieve a list of all orders in the system. Orders are sorted by creation date (newest first).",
         "operationId": "listOrders",
         "tags": ["orders"],
         "parameters": [
@@ -264,7 +313,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A list of orders",
+            "description": "Successfully retrieved list of orders",
             "content": {
               "application/json": {
                 "schema": {
@@ -279,8 +328,8 @@
         }
       },
       "post": {
-        "summary": "Create an order",
-        "description": "Place a new order",
+        "summary": "Create a new order",
+        "description": "Create a new order for a pet. The order will be placed with the provided details.",
         "operationId": "createOrder",
         "tags": ["orders"],
         "requestBody": {
@@ -290,6 +339,11 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Order"
+              },
+              "example": {
+                "petId": 1,
+                "quantity": 1,
+                "status": "placed"
               }
             }
           }
@@ -304,6 +358,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request - Invalid order data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -311,14 +375,14 @@
     "/orders/{orderId}": {
       "get": {
         "summary": "Get order by ID",
-        "description": "Returns a single order by its ID",
+        "description": "Retrieve detailed information about a specific order by its unique identifier.",
         "operationId": "getOrderById",
         "tags": ["orders"],
         "parameters": [
           {
             "name": "orderId",
             "in": "path",
-            "description": "ID of the order to retrieve",
+            "description": "Unique identifier of the order",
             "required": true,
             "schema": {
               "type": "integer",
@@ -328,7 +392,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Order found",
+            "description": "Successfully retrieved order information",
             "content": {
               "application/json": {
                 "schema": {
@@ -355,39 +419,43 @@
     "schemas": {
       "Pet": {
         "type": "object",
-        "required": ["name", "status"],
+        "required": ["name", "photoUrls"],
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64",
-            "description": "Unique identifier for the pet"
+            "description": "Unique identifier for the pet (auto-generated)"
           },
           "name": {
             "type": "string",
             "description": "Name of the pet",
-            "example": "Fluffy"
+            "example": "Buddy"
           },
           "category": {
-            "$ref": "#/components/schemas/Category"
+            "$ref": "#/components/schemas/Category",
+            "description": "Category the pet belongs to"
           },
           "photoUrls": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "format": "uri"
             },
-            "description": "List of photo URLs for the pet"
+            "description": "List of photo URLs for the pet",
+            "example": ["https://example.com/pet1.jpg", "https://example.com/pet1-alt.jpg"]
           },
           "tags": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Tag"
             },
-            "description": "Tags associated with the pet"
+            "description": "Tags associated with the pet for categorization"
           },
           "status": {
             "type": "string",
-            "description": "Pet status in the store",
-            "enum": ["available", "pending", "sold"]
+            "description": "Current status of the pet in the store",
+            "enum": ["available", "pending", "sold"],
+            "default": "available"
           }
         }
       },
@@ -396,10 +464,12 @@
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "description": "Unique identifier for the category"
           },
           "name": {
             "type": "string",
+            "description": "Name of the category",
             "example": "Dogs"
           }
         }
@@ -409,52 +479,65 @@
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "description": "Unique identifier for the tag"
           },
           "name": {
             "type": "string",
+            "description": "Name of the tag",
             "example": "friendly"
           }
         }
       },
       "Order": {
         "type": "object",
+        "required": ["petId", "quantity"],
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "description": "Unique identifier for the order (auto-generated)"
           },
           "petId": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "description": "ID of the pet being ordered"
           },
           "quantity": {
             "type": "integer",
-            "minimum": 1
+            "minimum": 1,
+            "description": "Quantity of the pet being ordered"
           },
           "shipDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Date when the order was shipped"
           },
           "status": {
             "type": "string",
-            "enum": ["placed", "approved", "delivered"]
+            "enum": ["placed", "approved", "delivered"],
+            "description": "Current status of the order",
+            "default": "placed"
           },
           "complete": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "description": "Whether the order is complete"
           }
         }
       },
       "Error": {
         "type": "object",
+        "required": ["code", "message"],
         "properties": {
           "code": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "HTTP status code"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable error message"
           }
         }
       }
@@ -463,11 +546,11 @@
   "tags": [
     {
       "name": "pets",
-      "description": "Operations about pets"
+      "description": "Operations for managing pets in the store"
     },
     {
       "name": "orders",
-      "description": "Operations about orders"
+      "description": "Operations for managing pet orders"
     }
   ]
 } 

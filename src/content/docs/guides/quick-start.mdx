@@ -1,0 +1,182 @@
+---
+title: Quick Start Guide
+description: Get up and running with the Pet Store API in minutes
+---
+
+# Quick Start Guide
+
+Welcome to the Pet Store API! This guide will help you make your first API request in just a few minutes.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- A modern web browser or API client (like Postman, Insomnia, or curl)
+- Basic knowledge of HTTP requests and JSON
+- No authentication required for this demo API
+
+## Making Your First Request
+
+### 1. List All Pets
+
+Start by retrieving a list of all pets in the store:
+
+```bash
+curl -X GET "https://api.petstore.com/v1/pets" \
+  -H "Content-Type: application/json"
+```
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Buddy",
+    "category": {
+      "id": 1,
+      "name": "Dogs"
+    },
+    "photoUrls": ["https://example.com/buddy.jpg"],
+    "tags": [
+      {
+        "id": 1,
+        "name": "friendly"
+      }
+    ],
+    "status": "available"
+  }
+]
+```
+
+### 2. Create a New Pet
+
+Add a new pet to the store:
+
+```bash
+curl -X POST "https://api.petstore.com/v1/pets" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Fluffy",
+    "category": {
+      "id": 2,
+      "name": "Cats"
+    },
+    "photoUrls": ["https://example.com/fluffy.jpg"],
+    "tags": [
+      {
+        "id": 2,
+        "name": "playful"
+      }
+    ],
+    "status": "available"
+  }'
+```
+
+### 3. Get a Specific Pet
+
+Retrieve information about a specific pet by ID:
+
+```bash
+curl -X GET "https://api.petstore.com/v1/pets/1" \
+  -H "Content-Type: application/json"
+```
+
+## Using Different Programming Languages
+
+### JavaScript (Node.js)
+
+```javascript
+const fetch = require('node-fetch');
+
+// List all pets
+async function listPets() {
+  const response = await fetch('https://api.petstore.com/v1/pets');
+  const pets = await response.json();
+  console.log(pets);
+}
+
+// Create a new pet
+async function createPet() {
+  const response = await fetch('https://api.petstore.com/v1/pets', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: 'Fluffy',
+      category: { id: 2, name: 'Cats' },
+      photoUrls: ['https://example.com/fluffy.jpg'],
+      tags: [{ id: 2, name: 'playful' }],
+      status: 'available'
+    })
+  });
+  const pet = await response.json();
+  console.log(pet);
+}
+```
+
+### Python
+
+```python
+import requests
+
+# List all pets
+def list_pets():
+    response = requests.get('https://api.petstore.com/v1/pets')
+    pets = response.json()
+    print(pets)
+
+# Create a new pet
+def create_pet():
+    pet_data = {
+        'name': 'Fluffy',
+        'category': {'id': 2, 'name': 'Cats'},
+        'photoUrls': ['https://example.com/fluffy.jpg'],
+        'tags': [{'id': 2, 'name': 'playful'}],
+        'status': 'available'
+    }
+    response = requests.post('https://api.petstore.com/v1/pets', json=pet_data)
+    pet = response.json()
+    print(pet)
+```
+
+## Understanding Responses
+
+### Success Responses
+
+- **200 OK**: Request successful (GET, PUT)
+- **201 Created**: Resource created successfully (POST)
+- **204 No Content**: Request successful, no content returned (DELETE)
+
+### Error Responses
+
+- **400 Bad Request**: Invalid request data
+- **404 Not Found**: Resource not found
+- **500 Internal Server Error**: Server error
+
+Example error response:
+```json
+{
+  "code": 404,
+  "message": "Pet with ID 999 not found"
+}
+```
+
+## Next Steps
+
+Now that you've made your first API calls, explore:
+
+- **[Complete API Reference](/api/petstore-api/)** - All available endpoints
+- **[Authentication Guide](/guides/authentication/)** - Learn about authentication (when implemented)
+- **[Error Handling](/api/errors/)** - Handle errors gracefully
+- **[Best Practices](/guides/best-practices/)** - Recommended patterns
+
+## Need Help?
+
+- Check the **[API Reference](/api/petstore-api/)** for detailed endpoint documentation
+- Review **[Error Handling](/api/errors/)** for common issues
+- Contact support at support@petstore.com
+
+---
+
+> **💡 Tip:** Use the interactive documentation in the API Reference to try requests directly in your browser! 
